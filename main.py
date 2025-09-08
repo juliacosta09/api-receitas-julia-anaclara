@@ -1,4 +1,4 @@
-receitas = [
+'''receitas = [
     {
         "nome": "brownie",
         "ingredientes": ["3 ovos", "6 colheres de açúcar", "2 xícaras de chocolate em pó"],
@@ -57,8 +57,15 @@ receitas = [
         "utensilios": ["liquidificador"],
         "modo_preparo": "Bata tudo no liquidificador e leve à geladeira."
     }
-]
+]'''
 from fastapi import FastAPI
+
+from pydantic import BaseModel
+from typing import list
+class receita(basemodel1):
+    nome : str
+    ingredientes : list[str]
+     modo_de_preparo : str
 
 app = FastAPI(title='API da Ana Clara e da Júlia Emily')
 
@@ -70,13 +77,16 @@ def title():
 def get_receita():
     return{"/"}
 
-@app.get("/receita/{nome_receita}")
+@app.get("/receitas/{nome_receita}")
 def get_receita_by_name(nome_receita: str):
-    return{"a receita é:", nome_receita}
+    for receita in receitas:
+        if receita.nome == nome_receita:
+    return receita
 
-    from pydantic import BaseModel
-    from typing import list
-    class receita(basemodel1):
-        nome : str
-        ingredientes : list[str]
-        modo_de_preparo : str
+return {"receita não encontrada"}
+
+receitas: list[receita] = []
+
+@app.get("/receitas/")
+def get_todas_receitas():
+    return receitas
