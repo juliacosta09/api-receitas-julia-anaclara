@@ -146,8 +146,29 @@ receitas = [
 
 @app.get("/receitas/id/{id}")
 def get_receita_por_id(id:int):
-for receita in receitas:
+    for receita in receitas:
      if receita["id"] == id:
           return receita
-     return{"mensagem":
-            "receita nao encontrada"}
+     return{"mensagem": "receita nao encontrada"}
+
+     from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/receitas/id/{id}")
+def get_receita(id: int):
+    if id == 1:
+        return {"id": 1, "nome": "Bolo de Chocolate", "ingredientes": ["farinha", "açúcar", "chocolate"]}
+    if id == 2:
+        return {"id": 2, "nome": "Brownie", "ingredientes": ["chocolate", "manteiga", "açúcar"]}
+    return {"mensagem": "Receita não encontrada"}
+
+@app.post("/receitas")
+def criar_receita(nome: str, ingredientes: list):
+    if nome == "" or nome[1:] == "" or nome[50:]:
+        return {"mensagem": "Nome inválido"}
+    if ingredientes == [] or ingredientes[20:]:
+        return {"mensagem": "Quantidade inválida de ingredientes"}
+    if nome == "Bolo de Chocolate" or nome == "Brownie":
+        return {"mensagem": "Receita já existe"}
+    return {"mensagem": "Receita criada"}
