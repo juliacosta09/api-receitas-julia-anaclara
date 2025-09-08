@@ -61,13 +61,13 @@
 from fastapi import FastAPI
 
 from pydantic import BaseModel
-from typing import list
+from typing import List
 class receita(BaseModel):
     nome : str
-    ingredientes : list[str]
+    ingredientes : List[str]
     modo_de_preparo : str
 
-receitas: list[receita] = []
+receitas: List[receita] = []
 
 app = FastAPI(title='API da Ana Clara e da Júlia Emily')
 
@@ -87,7 +87,7 @@ def get_receita_by_name(nome_receita: str):
 
     return {"receita não encontrada"}
 
-receitas: list[receita] = []
+receitas: List[receita] = []
 
 @app.get("/receitas/")
 def get_todas_receitas():
@@ -99,3 +99,39 @@ def create_receita(dados: receita):
 
     receitas.append(nova_receita)
     return nova_receita
+
+from fastapi import FastAPI
+app = FastAPI()
+receitas = []
+
+@app.post("/receitas/")
+def criar_receita(nome: str, descricao: str):
+     for r in receitas:
+          if r[0] == nome:
+               return "uma receita ja tem esse nome"
+          receitas.append((nome, descricao))
+          return "receita {nome} criada"
+     
+class CreateReceita(BaseModel):
+        nome: str
+        ingredientes: List[str]
+        modo_de_preparo: str
+
+class Receita(BaseModel):
+        id: int
+        nome: str
+        ingredientes: List[str]
+        modo_de_preparo: str
+
+from fastapi import FastAPI
+app = FastAPI()
+
+receitas = []
+ultimo_id = 0
+
+@app.post("/receitas")
+def criar_receita(nome: str , ingredientes: str , modo_de_preparo: str):
+     ultimo_id[0] += 1
+     receita = (ultimo_id[0], nome,ingredientes, modo_de_preparo)
+     receitas.append(receita)
+     return receita
