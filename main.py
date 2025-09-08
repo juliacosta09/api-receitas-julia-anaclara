@@ -135,3 +135,19 @@ def criar_receita(nome: str , ingredientes: str , modo_de_preparo: str):
      receita = (ultimo_id[0], nome,ingredientes, modo_de_preparo)
      receitas.append(receita)
      return receita
+
+from fastapi import FastAPI
+app = FastAPI()
+
+receitas = [
+     {"id":1, "nome": "bolo de chocolate", "ingredientes":["farinha","açucar","chocolate"]},
+     {"id":2, "nome":"brownie", "ingredientes":["chocolate", "manteiga", "açucar"]},
+]
+
+@app.get("/receitas/id/{id}")
+def get_receita_por_id(id:int):
+for receita in receitas:
+     if receita["id"] == id:
+          return receita
+     return{"mensagem":
+            "receita nao encontrada"}
