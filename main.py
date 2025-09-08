@@ -18,6 +18,7 @@ receitas = [
         "modo_preparo": "Bata os ingredientes e asse por 40 minutos."
     },
 ]
+  [
  {
         "nome": "panqueca",
         "ingredientes": ["2 ovos", "1 xícara de leite", "1 xícara de farinha"],
@@ -37,6 +38,7 @@ receitas = [
         "modo_preparo": "Bata tudo no liquidificador e leve à geladeira."
     }
 ]
+  [
  {
         "nome": "panqueca",
         "ingredientes": ["2 ovos", "1 xícara de leite", "1 xícara de farinha"],
@@ -71,3 +73,10 @@ def get_receita():
 @app.get("/receita/{nome_receita}")
 def get_receita_by_name(nome_receita: str):
     return{"a receita é:", nome_receita}
+
+    from pydantic import BaseModel
+    from typing import list
+    class receita(basemodel1):
+        nome : str
+        ingredientes : list[str]
+        modo_de_preparo : str
