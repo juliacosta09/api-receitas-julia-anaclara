@@ -90,3 +90,9 @@ receitas: list[receita] = []
 @app.get("/receitas/")
 def get_todas_receitas():
     return receitas
+
+@app.post(/"receitas")
+def create_receita(dados: receita):
+    nova_receita = dados
+
+    receitas.append(nova_receita)
