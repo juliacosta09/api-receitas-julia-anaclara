@@ -181,3 +181,7 @@ def update_receita(id: int, dados: CreateReceita):
                 return {"nome modificado"}
             return{"receita não encontrada"}
         
+        def editar_receita(nome, ingredientes, modo_de_preparo):
+            if nome == "" or ingredientes == "" or modo_de_preparo == "":
+                return {"campos vazios não são salvos"}
+            return {"receita foi editada"}        
