@@ -36,27 +36,9 @@
         "ingredientes": ["1 lata de leite condensado", "1 lata de creme de leite", "suco de maracujá"],
         "utensilios": ["liquidificador"],
         "modo_preparo": "Bata tudo no liquidificador e leve à geladeira."
-    }
+    }
 ]
-  [
- {
-        "nome": "panqueca",
-        "ingredientes": ["2 ovos", "1 xícara de leite", "1 xícara de farinha"],
-        "utensilios": ["frigideira"],
-        "modo_preparo": "Bata tudo, despeje na frigideira e recheie a gosto."
-    },
-    {
-        "nome": "pudim",
-        "ingredientes": ["1 lata de leite condensado", "2 latas de leite", "3 ovos"],
-        "utensilios": ["liquidificador", "forma de pudim"],
-        "modo_preparo": "Bata, caramelize a forma e cozinhe em banho-maria."
-    },
-    {
-        "nome": "mousse de maracujá",
-        "ingredientes": ["1 lata de leite condensado", "1 lata de creme de leite", "suco de maracujá"],
-        "utensilios": ["liquidificador"],
-        "modo_preparo": "Bata tudo no liquidificador e leve à geladeira."
-    }
+  
 ]'''
 from fastapi import FastAPI
 
@@ -172,3 +154,26 @@ def criar_receita(nome: str, ingredientes: list):
     if nome == "Bolo de Chocolate" or nome == "Brownie":
         return {"mensagem": "Receita já existe"}
     return {"mensagem": "Receita criada"}
+
+@app.put("/receitas{id}")
+def update_receita(id: int, dados: CreateReceita):
+    for i in range(len(receitas)):
+        if receitas[i].id == id:
+            receita_atualizada = Receita(
+                id=id,
+                nome=dados.nome,
+                ingredientes=dados.ingredientes,
+                modo_de_preparo=dados.modo_de_preparo,
+            )
+
+            receitas[i] = (receita_atualizada)
+            return receita_atualizada
+        return{"mensagem": "Receita não encontrada"}
+    
+    receita = ["brownie", "torta", "bolo de cenoura", "panqueca", "mousse de maracuja", "pudim"]
+
+    def editar_nome(nome_atual, nome_alterado):
+        if nome_alterado in receitas:
+            return {"já existe"}
+        for i in range (len(receitas)): 
+        
