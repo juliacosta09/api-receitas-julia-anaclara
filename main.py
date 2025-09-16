@@ -176,4 +176,8 @@ def update_receita(id: int, dados: CreateReceita):
         if nome_alterado in receitas:
             return {"já existe"}
         for i in range (len(receitas)): 
+            if receitas[i] == nome_atual:
+                receitas[i] == nome_alterado
+                return {"nome modificado"}
+            return{"receita não encontrada"}
         
