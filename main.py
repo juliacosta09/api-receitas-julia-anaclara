@@ -184,4 +184,15 @@ def update_receita(id: int, dados: CreateReceita):
         def editar_receita(nome, ingredientes, modo_de_preparo):
             if nome == "" or ingredientes == "" or modo_de_preparo == "":
                 return {"campos vazios não são salvos"}
-            return {"receita foi editada"}        
+            return {"receita foi editada"}      
+
+        @app.delete("/receitas/{id}") 
+        def deletar_receita(id: int):
+
+            for i in range(len(receitas)):
+                if receitas[i].id == id:
+                    receitas.pop(i)
+                    return {"mensagem": "receita deletada"}
+                return{"mensagem : " "receita não encontrada"}
+            
+            
