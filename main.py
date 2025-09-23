@@ -195,4 +195,18 @@ def update_receita(id: int, dados: CreateReceita):
                     return {"mensagem": "receita deletada"}
                 return{"mensagem : " "receita não encontrada"}
             
+            from fastapi import FastAPI
+
+            app = FastAPI()
+            receitas = ["brownie", "torta", "bolo de cenoura", "panqueca", "mousse de maracuja", "pudim"]
+
+            @app.delete("/deletar/{nome}")
+            def deletar_receita(nome: str):
+                if not receitas:
+                    return {"mensagem": "não existe receitas para excluir"}
+                if nome in receitas:
+                    receitas.remove(nome)
+                    return {"mensagem": "deletando receita de '{nome}'"}
+                else:
+                    return {"mensagem": "não existe a receita de {nome} na lista"}
             
