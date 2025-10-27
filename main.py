@@ -38,7 +38,7 @@
         "modo_preparo": "Bata tudo no liquidificador e leve à geladeira."
     }
 ]
-  
+
 ]'''
 from fastapi import FastAPI
 from pydantic import BaseModel
