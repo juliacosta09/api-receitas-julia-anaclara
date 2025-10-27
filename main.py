@@ -44,62 +44,50 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 
-app = FastAPI(title="API de Receitas - Ana Clara e Júlia Emily")
+app = FastAPI(title="API de Receitas da Ana Clara e da Júlia Emily")
 
 class Receita(BaseModel):
-    id: int
+
     nome: str
     ingredientes: List[str]
     modo_de_preparo: str
 
-receitas = []
-ultimo_id = 0
-
 @app.get("/")
-def inicio():
-    return {"mensagem": "Bem-vindo ao livro de receitas"}
+def hello():
+    return {"title": "Livro de Receitas"}
 
 @app.get("/receitas")
-def ver_todas():
+def listar_receitas():
     return receitas
 
-@app.get("/receitas/{id}")
-def ver_por_id(id: int):
-    for r in receitas:
-        if r["id"] == id:
-            return r
-    return {"mensagem": "Receita não encontrada"}
+@app.get("/receitas/{nome_receita}")
+def buscar_por_nome(nome_receita: str):
+    for receita in receitas:
+        if receita.nome == nome_receita:
+            return {"mensagem": "Receita encontrada com sucesso!", "dados": receita}
+    return {"mensagem": "Receita não encontrada."}
 
 @app.post("/receitas")
-def criar_receita(nome: str, ingredientes: List[str], modo_de_preparo: str):
-    global ultimo_id
+def criar_receita(nova_receita: Receita):
     for r in receitas:
-        if r["nome"] == nome:
-            return {"mensagem": "Já existe uma receita com esse nome"}
-    ultimo_id = ultimo_id + 1
-    receita = {
-        "id": ultimo_id,
-        "nome": nome,
-        "ingredientes": ingredientes,
-        "modo_de_preparo": modo_de_preparo
-    }
-    receitas.append(receita)
-    return {"mensagem": "Receita criada com sucesso", "receita": receita}
+        if r.nome == nova_receita.nome:
+            return {"mensagem": "Já existe uma receita com esse nome."}
+    receitas.append(nova_receita)
+    return {"mensagem": "Receita criada com sucesso!", "dados": nova_receita}
 
 @app.put("/receitas/{id}")
-def atualizar_receita(id: int, nome: str, ingredientes: List[str], modo_de_preparo: str):
-    for r in receitas:
-        if r["id"] == id:
-            r["nome"] = nome
-            r["ingredientes"] = ingredientes
-            r["modo_de_preparo"] = modo_de_preparo
-            return {"mensagem": "Receita atualizada com sucesso"}
-    return {"mensagem": "Receita não encontrada"}
+def atualizar_receita(id: int, dados: Receita):
+    for receita in receitas:
+        if receita.id == id:
+            receitas.remove(receita)
+            receitas.append(dados)
+            return {"mensagem": "Receita atualizada", "dados": dados}
+    return {"mensagem": "Receita não encontrada."}
 
-@app.delete("/receitas/{id}")
-def deletar_receita(id: int):
-    for r in receitas:
-        if r["id"] == id:
-            receitas.remove(r)
-            return {"mensagem": "Receita deletada com sucesso"}
-    return {"mensagem": "Receita não encontrada"}
+@app.delete("/receitas/{nome_receita}")
+def deletar_receita(nome_receita: str):
+    for receita in receitas:
+        if receita.nome == nome_receita:
+            receitas.remove(receita)
+            return {"mensagem":"Receita deletada com sucesso!"}
+    return {"mensagem": "A receita '{nome_receita}' não foi encontrada."}
